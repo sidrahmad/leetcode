@@ -1,13 +1,11 @@
 class Solution:
     def areaOfMaxDiagonal(self, dimensions: List[List[int]]) -> int:
-        max_dia_sq = 0
-        max_area = 0
-        for l, w in dimensions:
-            dia_sq = l * l + w * w
-            area = l * w
-            if dia_sq > max_dia_sq:
-                max_dia_sq = dia_sq
-                max_area = area
-            elif dia_sq == max_dia_sq:
-                max_area = max(max_area, area)
-        return max_area
+        max_diag = max(a**2+b**2 for a,b in dimensions)
+        return max(a*b for a, b in dimensions if a**2+b**2 == max_diag)
+        max_diag = 0
+        res = 0
+        for a, b in dimensions:
+            if a**2 + b**2 >= max_diag:
+                max_diag = a**2 + b**2
+                res = a*b
+        return res
