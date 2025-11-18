@@ -1,30 +1,31 @@
-class Solution:
-    # Arrays to store words for numbers less than 10, 20, and 100
-    below_ten = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
-    below_twenty = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"]
-    below_hundred = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+class Solution(object):
+    def numberToWords(self, num):
+        less_than_twenty = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"]
+        tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
 
-    # Main function to convert a number to English words
-    def numberToWords(self, num: int) -> str:
-        # Handle the special case where the number is zero
         if num == 0:
             return "Zero"
-        # Call the helper function to start the conversion
-        return self._convert_to_words(num)
 
-    # Recursive function to convert numbers to words
-    # Handles numbers based on their ranges: <10, <20, <100, <1000, <1000000, <1000000000, and >=1000000000
-    def _convert_to_words(self, num: int) -> str:
-        if num < 10:
-            return self.below_ten[num]
-        if num < 20:
-            return self.below_twenty[num - 10]
-        if num < 100:
-            return self.below_hundred[num // 10] + (" " + self._convert_to_words(num % 10) if num % 10 != 0 else "")
-        if num < 1000:
-            return self._convert_to_words(num // 100) + " Hundred" + (" " + self._convert_to_words(num % 100) if num % 100 != 0 else "")
-        if num < 1000000:
-            return self._convert_to_words(num // 1000) + " Thousand" + (" " + self._convert_to_words(num % 1000) if num % 1000 != 0 else "")
-        if num < 1000000000:
-            return self._convert_to_words(num // 1000000) + " Million" + (" " + self._convert_to_words(num % 1000000) if num % 1000000 != 0 else "")
-        return self._convert_to_words(num // 1000000000) + " Billion" + (" " + self._convert_to_words(num % 1000000000) if num % 1000000000 != 0 else "")
+        def to_words(n):
+            if n < 20:
+                return less_than_twenty[n]
+            elif n < 100:
+                return tens[n // 10] + ('' if n % 10 == 0 else ' ' + less_than_twenty[n % 10])
+            else:
+                return less_than_twenty[n // 100] + ' Hundred' + ('' if n % 100 == 0 else ' ' + to_words(n % 100))
+
+        billions, num = divmod(num, 1000000000)
+        millions, num = divmod(num, 1000000)
+        thousands, num = divmod(num, 1000)
+        
+        result = []
+        if billions:
+            result.append(to_words(billions) + ' Billion')
+        if millions:
+            result.append(to_words(millions) + ' Million')
+        if thousands:
+            result.append(to_words(thousands) + ' Thousand')
+        if num:
+            result.append(to_words(num))
+        
+        return ' '.join(result)
