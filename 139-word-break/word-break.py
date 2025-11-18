@@ -1,12 +1,16 @@
 class Solution:
     def wordBreak(self, s, wordDict): 
-        dp = [False]*(len(s)+1)
-        dp[0] = True
-
-        for i in range(1,len(s)+1):
-            for j in range(i):
-                if dp[j] and s[j:i] in wordDict:
+        n = len(s)
+        dp = [False] * n
+        for i in range(n):
+            for word in wordDict:
+                # check if is the end index of the word
+                lw = len(word)
+                if i < lw -1:
+                    continue
+                substr = s[i - lw + 1 : i + 1]
+                if word == substr and (i - lw < 0 or dp[i - lw] == True):
                     dp[i] = True
                     break
-        
-        return dp[-1]
+
+        return dp[n-1]
