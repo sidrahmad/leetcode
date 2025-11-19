@@ -1,4 +1,4 @@
-# 2. DP Top-down (Memoization)
+
 class Solution:
     def climbStairs(self, n: int) -> int:
         memo = {}
