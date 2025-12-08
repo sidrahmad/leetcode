@@ -1,14 +1,12 @@
-from math import sqrt
-
-
 class Solution:
     def countTriples(self, n: int) -> int:
         res = 0
-        # enumerate a and b
-        for a in range(1, n + 1):
-            for b in range(1, n + 1):
-                # determine if it meets the requirements
-                c = int(sqrt(a**2 + b**2 + 1))
-                if c <= n and c**2 == a**2 + b**2:
-                    res += 1
+        for u in range(2, int(sqrt(n)) + 1):
+            for v in range(1, u):
+                if (u - v) & 1 == 0 or gcd(u, v) != 1:
+                    continue                    
+                c = u * u + v * v
+                if c > n:
+                    continue
+                res += 2 * (n // c)
         return res
