@@ -1,16 +1,22 @@
+from typing import List
+
 class Solution:
     def applyOperations(self, nums: List[int]) -> List[int]:
-        
+        new_nums = [0] * len(nums)
+        count = 0
+        i = 0
 
-        for i in range (len(nums)-1):
-            if nums[i]==nums[i+1]:
-                nums[i]*=2
-                nums[i+1]=0
-            else:
-                continue
-        l=0
-        for r in range(len(nums)):
-            if nums[r]!=0:
-                nums[r],nums[l]=nums[l],nums[r]
-                l+=1
-        return nums
+        while i < len(nums) - 1:
+            if nums[i] != 0:
+                if nums[i] == nums[i + 1]:
+                    new_nums[count] = nums[i] * 2
+                    i += 1  
+                else:
+                    new_nums[count] = nums[i]
+                count += 1
+            i += 1
+        
+        if i < len(nums) and nums[i] != 0:
+            new_nums[count] = nums[i]
+
+        return new_nums
